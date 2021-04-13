@@ -2,9 +2,10 @@
   "name": "RolodexDotJs",
   "version": "1.0.0",
   "description": "A solution for managing a company's employees using node, inquirer, and MySQL.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
