@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+const { createPromptModule } = require('inquirer');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -22,45 +23,44 @@ const init = () => {
                 "View departments",
                 "View roles",
                 "View Employees",
-                "Update employee roles"
+                "Update employee roles",
+                "Quit"
             ]
         }
     ])
     .then(answers => {
         switch (answers.initQuestions) {
-            case "Add departments":
-                return createDept();
-
-            case "Add roles":
-                console.log("You selected Add roles! Whatdo you want to do next?");
+            case "Add departments": addDept();
                 break;
 
-            case "Add employees":
-                console.log("You selected Add employees! What do you want to do next?");
+            case "Add roles": addRole();
+                break;
+
+            case "Add employees": addEmp();
                 break;
 
             case "View departments":
-                console.log("You selected View departments! What do you want to do next?");
                 break;
 
             case "View roles":
-                console.log("You selected View roles! What do you want to do next?");
                 break;
 
             case "View Employees":
-                console.log("You selected View Employees! What do you want to do next?");
                 break;
 
             case "Update employee roles":
-                console.log("You selected Update employee roles! What do you want to do next?");
                 break;
-            default:
-                console.log("Please select a proper value!");
+
+            case "Quit": connection.end();
+                break;  
+
+            default: console.log("Please make valid selection!");
+                break;
         }
     });
 };
 
-const createDept = () => {
+const addDept = () => {
     inquirer.prompt([
         {
             type: "input",
@@ -68,26 +68,74 @@ const createDept = () => {
             name: "department"
         }
     ]).then((deptanswrs) => {
-        let queryString = "INSERT INTO department SET ?";
-        const query = connection.query(queryString, deptanswrs.department, (err, result) => {
+        let queryString = `INSERT INTO department (title) VALUES ('${deptanswrs.department}')`;
+        connection.query(queryString, (err, res) => {
             if (err) throw err;
-            console.log("Modified...", result.affectedRows);
-        })
-    })
+                console.table(deptanswrs);
+            init();
+            });
+        });
+        
+    };
+
+const addRole = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the role's title?",
+            name: "role"
+        },
+        {
+            type: "input",
+            message: "What is the role's salary?",
+            name: "salary"
+        },
+        {
+            type: "input",
+            message: "What is the role's department id?",
+            name: "dept_id"
+        }
+    ]).then((roleanswrs) => {
+        let queryString = `INSERT INTO role (title, salary, department_id) VALUES ('${roleanswrs.role}', '${roleanswrs.salary}', '${roleanswrs.dept_id}')`;
+        connection.query(queryString, (err, res) => {
+            if (err) throw err;
+                console.table(roleanswrs);
+            init();
+            });
+        });
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
+const addEmp = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the employee's first name?",
+            name: "first"
+        },
+        {
+            type: "input",
+            message: "What is the employee's last name?",
+            name: "last"
+        },
+        {
+            type: "input",
+            message: "What is the employee's role id?",
+            name: "role_id"
+        },
+        {
+            type: "input",
+            message: "What is the employee's manager id?",
+            name: "manager_id"
+        }
+    ]).then((empanswrs) => {
+        let queryString = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${empanswrs.first}', '${empanswrs.last}', '${empanswrs.role_id}', '${empanswrs.manager_id}')`;
+        connection.query(queryString, (err, res) => {
+            if (err) throw err;
+                console.table(empanswrs);
+            init();
+            });
+        });
+};
 
 
 
