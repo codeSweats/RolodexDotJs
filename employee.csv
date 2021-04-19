@@ -1,0 +1,10 @@
+id,first_name,last_name,role_id,manager_id
+1,John,Doe,"Sales Lead",NULL
+2,Mike,Chan,Salesperson,NULL
+3,Ashley,Rodriguez,"Lead Engineer",NULL
+4,Kevin,Tupik,"Software Engineer",NULL
+6,Malia,Brown,Accountant,NULL
+7,Sarah,Lourd,"Legal Team Lead",NULL
+8,Tom,Allen,Lawyer,NULL
+9,Christian,Eckenrode,"Lead Engineer",NULL
+10,Tammer,Galal,"Software Engineer",NULL
